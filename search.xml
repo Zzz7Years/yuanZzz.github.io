@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>欢迎来到 yuanZzz 的个人博客</title>
+      <link href="/2019/09/19/welcome/"/>
+      <url>/2019/09/19/welcome/</url>
+      
+        <content type="html"><![CDATA[<p><strong>我们所度过的每个平凡的日常,也许就是连续发生的奇迹。</strong><br><strong>日々私たちが过ごしている日常は、実は、奇迹の连続なのかもしれな。</strong>    ——《日常》</p><a id="more"></a><h3 id="Welcome-to-my-Blog"><a href="#Welcome-to-my-Blog" class="headerlink" title="Welcome to my Blog !"></a>Welcome to my Blog !</h3><h3 id="本博客为记录工作学习的个人博客"><a href="#本博客为记录工作学习的个人博客" class="headerlink" title="本博客为记录工作学习的个人博客"></a>本博客为记录工作学习的个人博客</h3><!--部分素材取自互联网，如有侵权请立即联系删除！-->]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JAVA 捕获唯一索引重复异常</title>
+      <link href="/2019/07/28/ViolateExcept/"/>
+      <url>/2019/07/28/ViolateExcept/</url>
+      
+        <content type="html"><![CDATA[<p>JAVA 捕获 MySQLIntegrityConstraintViolationException （唯一索引重复）异常</p><a id="more"></a><p>在 service 层的数据库操作块无法捕捉因唯一索引而引发的数据库更新或插入异常，只能通过service方法抛出 DataAccess 异常，再到 Controller 层捕获</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">update</span><span class="params">(UserEntity user)</span> <span class="keyword">throws</span> DataAccessException</span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/update"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">update</span><span class="params">(@RequestBody userEntity)</span></span>&#123;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"><span class="keyword">return</span> userService.update(userEntity);</span><br><span class="line">&#125;<span class="keyword">catch</span>(DataAccessException e)&#123;</span><br><span class="line"><span class="keyword">return</span> FunCommon.getReturnJson(<span class="string">"msg"</span>,<span class="string">"用户名重复"</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> MyBatis </tag>
+            
+            <tag> MySQL </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BAT 脚本实现文件夹监控</title>
+      <link href="/2019/07/13/batWatchfile/"/>
+      <url>/2019/07/13/batWatchfile/</url>
+      
+        <content type="html"><![CDATA[<p>Windows 环境下快速编写 BAT 脚本实现文件夹监控</p><a id="more"></a><p>bat 脚本监控 windows 文件夹，如有新增文件，则调用另外一个bat脚本，再删除文件</p><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@<span class="built_in">echo</span> off &amp; <span class="built_in">title</span> 监控文件夹 By 放射云</span><br><span class="line"><span class="built_in">color</span> <span class="number">0</span>a &amp; <span class="built_in">mode</span> <span class="number">35</span>,<span class="number">3</span></span><br><span class="line"> </span><br><span class="line">::设置要监控的文件夹</span><br><span class="line"><span class="built_in">set</span> MtrDir=C:\Users\Administrator\Desktop\xp\aaa</span><br><span class="line"> </span><br><span class="line">::设置要调用的bat脚本</span><br><span class="line"><span class="built_in">set</span> Bat=alert.bat</span><br><span class="line"> </span><br><span class="line"><span class="built_in">echo</span> 正在初始化记录文件 ...</span><br><span class="line">(<span class="keyword">for</span> /f "delims=" <span class="variable">%%a</span> <span class="keyword">in</span> ('<span class="built_in">dir</span> /a-d/s/b "<span class="variable">%MtrDir%</span>\*"') <span class="keyword">do</span> (</span><br><span class="line">    <span class="built_in">echo</span> "<span class="variable">%%~</span>a"</span><br><span class="line">))&gt;"<span class="variable">%tmp%</span>\oFiles.Lst"</span><br><span class="line"></span><br><span class="line">:Loop</span><br><span class="line"><span class="built_in">set</span> "Change="</span><br><span class="line"><span class="built_in">cls</span> &amp; <span class="built_in">echo</span> 正在监控文件夹中 ...</span><br><span class="line"><span class="keyword">for</span> /f "delims=" <span class="variable">%%a</span> <span class="keyword">in</span> ('<span class="built_in">dir</span> /a-d/s/b "<span class="variable">%MtrDir%</span>"') <span class="keyword">do</span> (</span><br><span class="line">    <span class="built_in">findstr</span> /i "^\"<span class="variable">%%~</span>a\"$" "<span class="variable">%tmp%</span>\oFiles.Lst" &gt;<span class="built_in">nul</span> || (</span><br><span class="line">        <span class="built_in">echo</span> <span class="built_in">del</span> /f /q "<span class="variable">%%~</span>a"&gt;&gt;"<span class="variable">%tmp%</span>\DelNewFile.bat"</span><br><span class="line">        <span class="built_in">set</span> Change=<span class="number">1</span></span><br><span class="line">    )</span><br><span class="line">)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">defined</span> Change (</span><br><span class="line">    <span class="built_in">echo</span> 发现新增文件，启动其它脚本。</span><br><span class="line">    <span class="keyword">call</span> "<span class="variable">%Bat%</span>"</span><br><span class="line">    <span class="keyword">call</span> "<span class="variable">%tmp%</span>\DelNewFile.bat"</span><br><span class="line">)</span><br><span class="line"><span class="keyword">goto</span> Loop</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> .bat </tag>
+            
+            <tag> Windows </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Spring 项目实现简单的多线程定时同步任务</title>
+      <link href="/2019/02/26/timerSycn/"/>
+      <url>/2019/02/26/timerSycn/</url>
+      
+        <content type="html"><![CDATA[<p>Spring 项目实现简单的多线程定时同步任务</p><a id="more"></a><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1 在contextListener 直接定义调用3个线程</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextListener</span> <span class="keyword">implements</span> <span class="title">ServletContextListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextInitialized</span><span class="params">(ServleteContextEvent sce )</span></span>&#123;</span><br><span class="line">Thread t1 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"><span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">com.test.ApplySynManager.getInstance().synMain();</span><br><span class="line">Thread.sleep(<span class="number">60</span> * <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;<span class="keyword">catch</span>()&#123;</span><br><span class="line">e.printStackTrace();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Thread t2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">...</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Thread t3 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">t1.start();</span><br><span class="line">t2.start();</span><br><span class="line">t3.start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//2、单例模式管理线程</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplySynManager</span></span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">ApplySynManager</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"><span class="keyword">private</span> ApplySynManager examApp = <span class="keyword">null</span>;</span><br><span class="line"><span class="comment">//单例模式，保持这个对象  </span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ApplySynManager <span class="title">getInstance</span><span class="params">()</span></span>&#123;  </span><br><span class="line">        <span class="keyword">if</span> (examApp == <span class="keyword">null</span>) &#123;  </span><br><span class="line">            <span class="comment">//当flag == true时，为了解决，timer.cancel()后，重新创建一个timer  </span></span><br><span class="line">        examApp = <span class="keyword">new</span> ExamApplySynManager();    </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> examApp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">synMain</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">if</span>(DefCommon.syncExamThread == DefCommon.THREAD_RUNING)&#123;</span><br><span class="line">FunCommon.printLog(<span class="string">"线程运行中synExamMain"</span>);</span><br><span class="line"><span class="keyword">return</span> FunCommon.getReturnJson(DefCommon.E_Fail,<span class="string">"syncExamThread,线程运行中"</span>);</span><br><span class="line">&#125;</span><br><span class="line">DefCommon.syncExamThread = DefCommon.THREAD_RUNING;</span><br><span class="line"></span><br><span class="line"><span class="comment">//业务处理...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//线程标记为结束</span></span><br><span class="line">DefCommon.syncExamThread = DefCommon.THREAD_STOP;</span><br><span class="line"><span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">synReport</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//对应t2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">synDcm</span><span class="params">()</span></span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="comment">//对应t3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Java </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Spring </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>原生 Ajax 上传文件</title>
+      <link href="/2019/02/12/ajaxUpload/"/>
+      <url>/2019/02/12/ajaxUpload/</url>
+      
+        <content type="html"><![CDATA[<p>有时小小的文件上传用 WebUploader 之类嫌费劲，看下原生 Ajax 上传文件</p><a id="more"></a><p>值得注意的一点是要在 input[type=file] Dom上添加 Listenner(change) 事件，否则会点击就直接提交 ajax 请求了</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span> <span class="attr">method</span>=<span class="string">"POST"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">id</span>=<span class="string">"imgCase"</span> <span class="attr">onclick</span>=<span class="string">"javascrpit:this.addEventListener('change', upload, false);"</span> <span class="attr">multiple</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">upload</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"> <span class="keyword">var</span> formData = <span class="keyword">new</span> FormData();</span><br><span class="line"> <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;$(<span class="string">'#imgCase'</span>)[<span class="number">0</span>].files.length;i++)&#123;</span><br><span class="line">  formData.append(<span class="string">'file['</span>+i+<span class="string">']'</span>,$(<span class="string">'#imgCase'</span>)[<span class="number">0</span>].files[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  $.ajax(&#123;</span><br><span class="line">  type:<span class="string">"post"</span>,</span><br><span class="line">  url:serverURL+<span class="string">"/attached/upl_atc"</span>,</span><br><span class="line">  data:formData,</span><br><span class="line">  <span class="keyword">async</span>:<span class="literal">true</span>,</span><br><span class="line">  contentType:<span class="literal">false</span>,</span><br><span class="line">  processData:<span class="literal">false</span>,</span><br><span class="line">  mimeType:<span class="string">'mutipart/form-data'</span>,</span><br><span class="line">  success:<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">补充：ajax 提交 form 表单会出现表单自动提交并跳转，需要添加onsubmit=<span class="string">"return false"</span></span><br><span class="line">&lt;form onsubmit=<span class="string">"return false"</span> method=<span class="string">"post"</span> action=<span class="string">"#"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JQuery </tag>
+            
+            <tag> Ajax </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>两个非常实用的匹配中文字符正则表达式</title>
+      <link href="/2018/12/01/regCN/"/>
+      <url>/2018/12/01/regCN/</url>
+      
+        <content type="html"><![CDATA[<p>在处理字符串时，特别是处理 HTML 字符串时，常常需要用到正则表达式来处理中文字符。 以下介绍两个非常实用的表达式</p><a id="more"></a><h4 id="gt-由网络爬虫展开"><a href="#gt-由网络爬虫展开" class="headerlink" title="&gt; 由网络爬虫展开"></a>&gt; 由网络爬虫展开</h4><h3 id="1-仅仅匹配中文字符：-u4e00-u9fa5"><a href="#1-仅仅匹配中文字符：-u4e00-u9fa5" class="headerlink" title="1. 仅仅匹配中文字符：([\u4e00-\u9fa5]+)"></a>1. 仅仅匹配中文字符：([\u4e00-\u9fa5]+)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">String str = <span class="string">"&lt;img alt=\"甲状腺。\" src= 'd://a.img' &gt;  &lt;p&gt;这是第一句话！&lt;/p&gt;"</span>;</span><br><span class="line"></span><br><span class="line">String reg = <span class="string">"([\\u4e00-\\u9fa5]+)"</span>;</span><br><span class="line"><span class="comment">//String reg = "([^\\x00-\\xff]+)";</span></span><br><span class="line"></span><br><span class="line">Pattern pattern = Pattern.compile(reg);</span><br><span class="line">Matcher matcher = pattern.matcher(str);</span><br><span class="line"><span class="keyword">while</span>(matcher.find())&#123;</span><br><span class="line">System.out.println(matcher.group(<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印结果：</span></span><br><span class="line">甲状腺</span><br><span class="line">这是第一句话</span><br></pre></td></tr></table></figure><h3 id="2-匹配中文字符以及标点：-x00-xff"><a href="#2-匹配中文字符以及标点：-x00-xff" class="headerlink" title="2. 匹配中文字符以及标点：([^\x00-\xff]+)"></a>2. 匹配中文字符以及标点：([^\x00-\xff]+)</h3><p>此表达式又称为双字节字符匹配</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="string">"&lt;img alt=\"甲状腺。\" src= 'd://a.img' &gt;  &lt;p&gt;这是第一句话！&lt;/p&gt;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//String reg = "([\\u4e00-\\u9fa5]+)";</span></span><br><span class="line">String reg = <span class="string">"([^\\x00-\\xff]+)"</span>;</span><br><span class="line"></span><br><span class="line">Pattern pattern = Pattern.compile(reg);</span><br><span class="line">Matcher matcher = pattern.matcher(str);</span><br><span class="line"><span class="keyword">while</span>(matcher.find())&#123;</span><br><span class="line">System.out.println(matcher.group(<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//打印结果：</span></span><br><span class="line">甲状腺。</span><br><span class="line">这是第一句话！</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 正则 </tag>
+            
+            <tag> 字符串处理 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ajax 同步状态下获取返回值</title>
+      <link href="/2018/12/01/synGetReurn/"/>
+      <url>/2018/12/01/synGetReurn/</url>
+      
+        <content type="html"><![CDATA[<p>实际上 ajax 同步状态下是不可能获取到返回值的，只能利用回调方式在ajax方法外操作返回的数据 </p><a id="more"></a><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">load_val</span>(<span class="params">callback</span>)</span>&#123;<span class="comment">//定义一个回调函数</span></span><br><span class="line">    $.getJSON(<span class="string">'test.php'</span> , <span class="function"><span class="keyword">function</span>(<span class="params">dat</span>)</span>&#123;</span><br><span class="line">        callback(data);<span class="comment">//将返回结果当作参数返回</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">load_val(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">    alert(data);<span class="comment">//这里可以得到值</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">search</span>(<span class="params">arg0,callback</span>)</span>&#123;</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">url:,</span><br><span class="line">data:&#123;<span class="attr">json</span>:arg0&#125;,</span><br><span class="line">dataType:<span class="string">"json"</span></span><br><span class="line"><span class="keyword">async</span>:<span class="literal">true</span>,</span><br><span class="line">success:<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">callback(data);</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Ajax </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CSS 实现“小三角”</title>
+      <link href="/2018/11/22/tri/"/>
+      <url>/2018/11/22/tri/</url>
+      
+        <content type="html"><![CDATA[<p>html 页面常常需要画小三角。如下代码，调整宽高和方向。</p><a id="more"></a><h4 id="gt-项目小结"><a href="#gt-项目小结" class="headerlink" title="&gt; 项目小结"></a>&gt; 项目小结</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type=&quot;text/css&quot;&gt;</span><br><span class="line">.triangle&#123;</span><br><span class="line">width: 0px;</span><br><span class="line">    height: 0px;</span><br><span class="line">    border-width: 20px 12px;</span><br><span class="line">    border-style: solid;</span><br><span class="line">    border-color: transparent transparent #22364d transparent;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line"></span><br><span class="line">&lt;div class=&quot;triangle&quot; id=&quot;doc_tri&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure><style type="text/css">.triangle{    width: 0px;    height: 0px;    border-width: 20px 12px;    border-style: solid;    border-color: transparent transparent #169fe6  transparent;}</style><div class="triangle" id="doc_tri"></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BootStrap 下拉菜单组件关闭点击事件 ( 转换为鼠标悬停事件 )</title>
+      <link href="/2018/11/20/drop/"/>
+      <url>/2018/11/20/drop/</url>
+      
+        <content type="html"><![CDATA[<p>有些时候需要关闭 BootStrap 下拉按钮组件的点击弹出菜单事件<br> <code>$(document).off(&#39;click.bs.dropdown.data-api&#39;)</code></p><a id="more"></a><h4 id="由官网项目小结"><a href="#由官网项目小结" class="headerlink" title="由官网项目小结"></a>由官网项目小结</h4><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><div class="dropup up_menu">  <a class="dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">     友情链接    <span class="caret"></span>  </a>  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">    <li><a href="http://www.chinaradiology.org" target="_blank">中华放射学分会</a></li>    <li><a href="http://www.cjrjournal.org/" target="_blank">中华放射学杂志</a></li>    <li><a href="http://www.fsxsj.net" target="_blank">放射学实践杂志</a></li>    <li><a href="http://www.cjmit.com" target="_blank">中国医学影像技术</a></li>    <li><a href="http://www.wanfangdata.com.cn" target="_blank">万方数据库</a></li>    <li><a href="http://epub.cnki.net" target="_blank">CNKI</a></li>    <li><a href="http://www.dxy.cn/" target="_blank">丁香园</a></li>  </ul></div>]]></content>
+      
+      
+      <categories>
+          
+          <category> Web前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> BootStrap </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java 实现 HTTP 请求的三种方式</title>
+      <link href="/2018/11/13/article/"/>
+      <url>/2018/11/13/article/</url>
+      
+        <content type="html"><![CDATA[<p>HttpURLConnection 是 JAVA 最原生的HTTP请求类。HttpClient 是 Apache Jakarta Common 下的子项目，用来提供高效的、最新的、功能丰富的支持 HTTP 协议的客户端编程工具包。</p><a id="more"></a><h4 id="gt-由JAVA网络爬虫延伸开"><a href="#gt-由JAVA网络爬虫延伸开" class="headerlink" title="&gt; 由JAVA网络爬虫延伸开"></a>&gt; 由JAVA网络爬虫延伸开</h4><h3 id="1-HttpURLConnection"><a href="#1-HttpURLConnection" class="headerlink" title="1. HttpURLConnection"></a>1. HttpURLConnection</h3><p>HttpURLConnection 是 JAVA 最原生的HTTP请求类。HttpURLConnection 的 connect() 函数，实际上只是建立了一个服务器的 tcp 连接,并没有实际发送http请求。</p><p>无论是用 post 还是 get , http 请求实际上直到 HttpURLConnection 的 getInputStream() 这个函数里面才正式发送出去。  </p><p>&emsp;&emsp;在用 Post 方式发送请求时， URL 请求参数的设定顺序是重中之重，对 connection 对象的一切配置(那一堆set函数) 都必须在函数 connect() 执行之前完成。<br>OutputStream的写操作， 必须在InputStream 的读操作之前。  </p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 创建远程url连接对象</span></span><br><span class="line">URL url = <span class="keyword">new</span> URL(httpurl);</span><br><span class="line"><span class="comment">// 通过远程url连接对象打开一个连接，强转成httpURLConnection类</span></span><br><span class="line">connection = (HttpURLConnection) url.openConnection();</span><br><span class="line"><span class="comment">// 设置连接方式：get</span></span><br><span class="line">connection.setRequestMethod(<span class="string">"GET"</span>);</span><br><span class="line"><span class="comment">// 设置连接主机服务器的超时时间：15000毫秒</span></span><br><span class="line">connection.setConnectTimeout(<span class="number">15000</span>);</span><br><span class="line"><span class="comment">// 设置读取远程返回的数据时间：60000毫秒</span></span><br><span class="line">connection.setReadTimeout(<span class="number">60000</span>);</span><br><span class="line"><span class="comment">// 发送请求</span></span><br><span class="line">connection.connect();</span><br><span class="line"><span class="comment">// 通过connection连接，获取输入流</span></span><br><span class="line"><span class="keyword">if</span> (connection.getResponseCode() == <span class="number">200</span>) &#123;</span><br><span class="line">    is = connection.getInputStream();</span><br><span class="line">    <span class="comment">// 封装输入流is，并指定字符集</span></span><br><span class="line">    br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(is, <span class="string">"UTF-8"</span>));</span><br><span class="line">    <span class="comment">// 存放数据</span></span><br><span class="line">    StringBuffer sbf = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">    String temp = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span> ((temp = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        sbf.append(temp);</span><br><span class="line">        sbf.append(<span class="string">"\r\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    result = sbf.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><h3 id="2-HttpClient"><a href="#2-HttpClient" class="headerlink" title="2. HttpClient"></a>2. HttpClient</h3><p>HttpClient 是 Apache Jakarta Common 下的子项目，用来提供高效的、最新的、功能丰富的支持 HTTP 协议的客户端编程工具包，并且它支持 HTTP 协议最新的版本和建议。<br>HttpClient 已经应用在很多的项目中，比如 Apache Jakarta 上很著名的另外两个开源项目 Cactus 和 HTMLUnit 都使用了 HttpClient。</p><blockquote><p>以下代码截取于自写爬虫之发送请求类</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">HttpClient httpClient = <span class="keyword">new</span> HttpClient();</span><br><span class="line"><span class="comment">// 设置 HTTP 连接超时 5s</span></span><br><span class="line">httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(<span class="number">5000</span>);</span><br><span class="line"><span class="comment">// 生成 GetMethod 对象并设置参数</span></span><br><span class="line">GetMethod getMethod = <span class="keyword">new</span> GetMethod(url);</span><br><span class="line"><span class="comment">// 设置 get 请求超时 5s</span></span><br><span class="line">getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, <span class="number">5000</span>);</span><br><span class="line"><span class="comment">// 设置请求重试处理</span></span><br><span class="line">getMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, <span class="keyword">new</span> DefaultHttpMethodRetryHandler(<span class="number">5</span>,<span class="keyword">true</span>));</span><br><span class="line"><span class="comment">// 执行 HTTP GET 请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.处理 HTTP 响应内容</span></span><br><span class="line"><span class="comment">// byte[] responseBody = getMethod.getResponseBody();// 读取为字节 数组</span></span><br><span class="line">    </span><br><span class="line">String contentType = getMethod.getResponseHeader(<span class="string">"Content-Type"</span>).getValue(); <span class="comment">// 得到当前返回类型</span></span><br><span class="line"><span class="keyword">byte</span>[] responseBody = toByteArray( getMethod.getResponseBodyAsStream());<span class="comment">// 读取为字节 数组</span></span><br></pre></td></tr></table></figure><br><h3 id="3-CloseableHttpClient"><a href="#3-CloseableHttpClient" class="headerlink" title="3. CloseableHttpClient"></a>3. CloseableHttpClient</h3><p>&emsp;&emsp;CloseableHttpClient 是 HttpClient 的帮助类 ( CloseableHttpClient 继承了 HttpClient 接口 )</p><blockquote><p>以下代码截取于自写爬虫之发送请求类</p></blockquote><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 设置连接超时时间</span></span><br><span class="line">  RequestConfig defaultRequestConfig = RequestConfig.custom()</span><br><span class="line">      .setSocketTimeout(<span class="number">5000</span>)</span><br><span class="line">      .setConnectTimeout(<span class="number">5000</span>)</span><br><span class="line">      .setConnectionRequestTimeout(<span class="number">5000</span>)</span><br><span class="line">      .build();</span><br><span class="line">  <span class="comment">// 生成CloseableHttpClient对象</span></span><br><span class="line">  <span class="comment">//CloseableHttpClient httpClient = HttpClients.createDefault();</span></span><br><span class="line">  CloseableHttpClient httpclient = HttpClients.custom()</span><br><span class="line">      .setDefaultRequestConfig(defaultRequestConfig)</span><br><span class="line">      .build();</span><br><span class="line">  CloseableHttpResponse response = <span class="keyword">null</span>;</span><br><span class="line">  </span><br><span class="line">  HttpGet httpGet = <span class="keyword">new</span> HttpGet(url);</span><br><span class="line">httpGet.setHeader(<span class="string">"User-Agent"</span>, <span class="string">"Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:50.0) Gecko/20100101 Firefox/50.0"</span>);</span><br><span class="line"></span><br><span class="line">String contentType =  entity.getContentType().getValue();<span class="comment">// 得到当前返回类型</span></span><br><span class="line">response = httpclient.execute(httpGet);<span class="comment">//获取响应</span></span><br><span class="line">HttpEntity entity = response.getEntity();</span><br></pre></td></tr></table></figure><br>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Http </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
